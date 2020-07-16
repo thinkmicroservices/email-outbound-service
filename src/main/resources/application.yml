@@ -1,0 +1,51 @@
+server:
+  port: 8080
+  
+info:
+  app:
+    name: Outbound Email Service
+    description: Provides an integration point to an outbound email provider
+    version: 1.0.0
+
+
+management:
+  endpoints:
+    metrics:
+      sensitive: false
+    web:
+      exposure:
+        include: info,health,prometheus
+endpoints:
+  prometheus:
+    sensitive: false        
+management.metrics.tags.application: ${spring.application.name} 
+        
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: think
+    password: microservices
+ 
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: EmailMessages
+          group: emailMessageGroup
+    default:
+      contentType: application/json
+  
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: account@gmail.com  #Replace this field with your Gmail username.
+    password: password           #Replace this field with your Gmail password/App password.
+    protocol: smtp
+    tls: true
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: smtp.gmail.com
+         
+    
